@@ -11,6 +11,7 @@ export const clients = pgTable('clients', {
 	slug: text('slug').notNull().unique(),
 	ownerUserId: text('owner_user_id').notNull(),
 	isActive: boolean('is_active').notNull().default(true),
+	avatar: text('avatar'),
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow()
 });

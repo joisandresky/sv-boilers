@@ -15,4 +15,8 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Dashboard</title>
+</svelte:head>
+
 <div class="text-2xl">Welcome, {data.user.name}!</div>

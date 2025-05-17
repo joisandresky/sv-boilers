@@ -39,6 +39,10 @@
 	let isMenuOpen = false;
 </script>
 
+<svelte:head>
+	<title>Reflectify</title>
+</svelte:head>
+
 <!-- Navigation -->
 <nav
 	class="fixed left-0 right-0 top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"

@@ -21,6 +21,7 @@ export const clientFormSchema = z.object({
 	}),
 	phone: z.string().optional(),
 	website: z.string().url('Please enter a valid URL').optional().nullish(),
+	avatar: z.any().optional(), // File upload will be handled separately from form validation
 	// slug: z.string(),
 });
 

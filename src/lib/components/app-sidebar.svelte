@@ -141,6 +141,7 @@
 	import NavUser from '$lib/components/nav-user.svelte';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import Command from '@lucide/svelte/icons/command';
+	import NavWorkspace from '$lib/components/nav-workspace.svelte';
 	import type { ComponentProps } from 'svelte';
 	import type { User } from 'better-auth';
 	import type { Subscription } from '$lib/types/subscription';
@@ -151,31 +152,33 @@
 		user,
 		subscription,
 		client,
+		workspace = {
+			name: 'Acme Inc',
+			plan: 'Enterprise',
+			avatar: '',
+			email: 'contact@acmeinc.com',
+			size: '50-100',
+			industry: 'Technology'
+		},
 		...restProps
-	}: ComponentProps<typeof Sidebar.Root> & { user: User, subscription: Subscription, client: Client } = $props();
+	}: ComponentProps<typeof Sidebar.Root> & { 
+		user: User, 
+		subscription: Subscription, 
+		client: Client,
+		workspace?: {
+			name: string;
+			plan: string;
+			avatar?: string;
+			email: string;
+			size: string;
+			industry: string;
+		}
+	} = $props();
 </script>
 
 <Sidebar.Root bind:ref variant="inset" {...restProps}>
 	<Sidebar.Header>
-		<Sidebar.Menu>
-			<Sidebar.MenuItem>
-				<Sidebar.MenuButton size="lg">
-					{#snippet child({ props })}
-						<a href="/" {...props}>
-							<div
-								class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
-							>
-								<Command class="size-4" />
-							</div>
-							<div class="grid flex-1 text-left text-sm leading-tight">
-								<span class="truncate font-semibold">Acme Inc</span>
-								<span class="truncate text-xs">Enterprise</span>
-							</div>
-						</a>
-					{/snippet}
-				</Sidebar.MenuButton>
-			</Sidebar.MenuItem>
-		</Sidebar.Menu>
+		<NavWorkspace {client} />
 	</Sidebar.Header>
 	<Sidebar.Content>
 		<NavMain items={data.navMain} />

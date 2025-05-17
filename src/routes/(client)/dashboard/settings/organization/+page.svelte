@@ -4,24 +4,51 @@
 	import { Input } from '$lib/components/ui/input';
     import * as Form from '$lib/components/ui/form';
 	import * as Select from '$lib/components/ui/select';
+	import FileUpload from '$lib/components/file-upload.svelte';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { clientFormSchema, type ClientFormSchema } from '../../../../onboarding/(components)/schema';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import type { Client } from '$lib/types/client';
 	import { companySizeOptions, industryOptions } from '$lib/utils';
+	import X from '@lucide/svelte/icons/x';
+	import { toast } from 'svelte-sonner';
 
     let { data }: { data: { form: SuperValidated<Infer<ClientFormSchema>>, client: Client } } = $props();
+	let avatarFiles: File[] = $state([]);
+	let showFileUpload = $state(!data.client.avatar);
 
     const form = superForm(data.form, {
         validators: zodClient(clientFormSchema),
+        taintedMessage: null,
+        dataType: 'form',
+        resetForm: false,
         onUpdated: ({ form }) => {
             if (form.valid) {
-                // Handle success and redirect to plan selection
-                window.location.href = '/onboarding/plan';
+                toast.success('Organization settings updated successfully');
+                showFileUpload = false;
             }
-        },
+        }
     });
-    const { form: formData, enhance, delayed } = form;
+    const { form: formData, enhance, delayed, message } = form;
+
+	function removeAvatar() {
+		$formData.avatar = undefined;
+		avatarFiles = [];
+		showFileUpload = true;
+	}
+
+	$effect(() => {
+		if (avatarFiles.length > 0) {
+			showFileUpload = true;
+		}
+	});
+
+    $effect(() => {
+        if ($message) {
+            // You can handle success/error messages here if needed
+            console.log('Form message:', $message);
+        }
+    });
 </script>
 
 <svelte:head>
@@ -36,7 +63,11 @@
 		</p>
 	</div>
 
-    <form method="POST" use:enhance>
+    <form 
+		method="POST" 
+		enctype="multipart/form-data"
+		use:enhance
+	>
         <Card.Root>
             <Card.Content class="space-y-6">
                 <div class="space-y-4">
@@ -118,6 +149,49 @@
                         </Form.Control>
                         <Form.FieldErrors />
                     </Form.Field>
+
+					<Form.Field {form} name="avatar">
+						<Form.Control>
+							{#snippet children({ props })}
+								<Form.Label>Organization Logo</Form.Label>
+								{#if !showFileUpload && data.client.avatar}
+									<div class="relative w-32">
+										<img
+											src={data.client.avatar}
+											alt="Organization logo"
+											class="h-32 w-32 rounded-lg object-cover"
+										/>
+										<button
+											type="button"
+											class="absolute -right-2 -top-2 rounded-full bg-destructive p-1 text-destructive-foreground hover:bg-destructive/90"
+											onclick={removeAvatar}
+										>
+											<X class="size-4" />
+											<span class="sr-only">Remove logo</span>
+										</button>
+									</div>
+									<Button
+										type="button"
+										variant="outline"
+										class="mt-2"
+										onclick={() => showFileUpload = true}
+									>
+										Change Logo
+									</Button>
+								{:else}
+									<FileUpload
+										accept="image/*"
+										maxSize={2}
+										bind:files={avatarFiles}
+									/>
+                                    <Form.Description>
+                                        Upload your organization logo. Maximum size 2MB. Supported formats: PNG, JPG, GIF.
+                                    </Form.Description>
+								{/if}
+							{/snippet}
+						</Form.Control>
+						<Form.FieldErrors />
+					</Form.Field>
                 </div>
             </Card.Content>
             <Card.Footer>
