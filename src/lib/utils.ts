@@ -1,5 +1,5 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -22,6 +22,23 @@ export function generateAvatarInitials(name: string): string {
 export function renderCurrency(amount: number, currency: string): string {
 	return new Intl.NumberFormat('en-US', {
 		style: 'currency',
-		currency: currency,
+		currency: currency
 	}).format(amount);
 }
+
+export const companySizeOptions = [
+	'1-10 employees',
+	'11-50 employees',
+	'51-200 employees',
+	'201-500 employees',
+	'500+ employees'
+] as const;
+
+export const industryOptions = [
+	'SaaS',
+	'E-commerce',
+	'FinTech',
+	'Healthcare',
+	'Education',
+	'Other'
+] as const;

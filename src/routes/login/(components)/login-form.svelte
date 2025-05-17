@@ -9,39 +9,42 @@
 	} from '$lib/components/ui/card';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
-    import Icon from "@iconify/svelte";
-    import {toast} from "svelte-sonner";
+	import Icon from '@iconify/svelte';
+	import { toast } from 'svelte-sonner';
 
-    import { authClient } from "$lib/auth-client";
+	import { authClient } from '$lib/auth-client';
 
 	async function onSignInWithGoogle() {
 		const data = await authClient.signIn.social({
 			provider: 'google',
-            callbackURL: '/dashboard',
-		})
+			callbackURL: '/dashboard'
+		});
 	}
 
-    let email = $state('');
+	let email = $state('');
 	let password = $state('');
 	let isLoading = $state(false);
 
-    async function onSignIn() {
-        const { data, error } = await authClient.signIn.email({
-            email: email,
-            password: password,
-            callbackURL: '/dashboard'
-        }, {
-            onRequest: (ctx) => {
-                isLoading = true;
-            },
-            onError: (ctx) => {
-                isLoading = false;
-                toast.error(ctx.error.statusText, {
-                    description: ctx.error.message || 'Something went wrong'
-                });
-            }
-        });
-    }
+	async function onSignIn() {
+		const { data, error } = await authClient.signIn.email(
+			{
+				email: email,
+				password: password,
+				callbackURL: '/dashboard'
+			},
+			{
+				onRequest: (ctx) => {
+					isLoading = true;
+				},
+				onError: (ctx) => {
+					isLoading = false;
+					toast.error(ctx.error.statusText, {
+						description: ctx.error.message || 'Something went wrong'
+					});
+				}
+			}
+		);
+	}
 </script>
 
 <svelte:head>
@@ -56,10 +59,10 @@
 		<CardContent>
 			<div class="grid gap-6">
 				<div class="flex flex-col gap-4">
-                    <Button onclick={onSignInWithGoogle} variant="outline" class="w-full" type="button">
-                        <Icon icon="devicon:google" class="mr-2 h-4 w-4" />
-                        Login With Google
-                    </Button>
+					<Button onclick={onSignInWithGoogle} variant="outline" class="w-full" type="button">
+						<Icon icon="devicon:google" class="mr-2 h-4 w-4" />
+						Login With Google
+					</Button>
 				</div>
 				<div
 					class="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border"
@@ -91,8 +94,8 @@
 					</div>
 					<Button type="submit" class="w-full" disabled={isLoading} onclick={onSignIn}>
 						{#if isLoading}
-                             <Icon icon="lucide:loader" class="mr-2 animate-spin" />
-                            Loading...
+							<Icon icon="lucide:loader" class="mr-2 animate-spin" />
+							Loading...
 						{:else}
 							Login
 						{/if}

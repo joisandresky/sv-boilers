@@ -1,4 +1,5 @@
 # SvelteKit Boilerplate
+
 - Sveltekit
 - Postgres
 - Drizzle ORM

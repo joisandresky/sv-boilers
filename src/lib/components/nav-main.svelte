@@ -1,10 +1,10 @@
 <script lang="ts">
-	import * as Collapsible from "$lib/components/ui/collapsible/index.js";
-	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
-	import ChevronRight from "@lucide/svelte/icons/chevron-right";
+	import * as Collapsible from '$lib/components/ui/collapsible/index.js';
+	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+	import ChevronRight from '@lucide/svelte/icons/chevron-right';
 
 	let {
-		items,
+		items
 	}: {
 		items: {
 			title: string;
@@ -42,10 +42,7 @@
 						{#if mainItem.items?.length}
 							<Collapsible.Trigger>
 								{#snippet child({ props })}
-									<Sidebar.MenuAction
-										{...props}
-										class="data-[state=open]:rotate-90"
-									>
+									<Sidebar.MenuAction {...props} class="data-[state=open]:rotate-90">
 										<ChevronRight />
 										<span class="sr-only">Toggle</span>
 									</Sidebar.MenuAction>

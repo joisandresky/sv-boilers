@@ -8,10 +8,10 @@
 		CardTitle
 	} from '$lib/components/ui/card';
 	import { Input } from '$lib/components/ui/input';
-	import * as Form from "$lib/components/ui/form";
-    import Icon from "@iconify/svelte";
+	import * as Form from '$lib/components/ui/form';
+	import Icon from '@iconify/svelte';
 
-    import { authClient } from "$lib/auth-client";
+	import { authClient } from '$lib/auth-client';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { formSchema, type RegisterFormSchema } from './schema';
 	import { zodClient } from 'sveltekit-superforms/adapters';
@@ -19,14 +19,14 @@
 	async function onSignInWithGoogle() {
 		await authClient.signIn.social({
 			provider: 'google',
-            callbackURL: '/dashboard',
-		})
+			callbackURL: '/dashboard'
+		});
 	}
 
-	let { data }: { data: { form: SuperValidated<Infer<RegisterFormSchema>> } }= $props();
+	let { data }: { data: { form: SuperValidated<Infer<RegisterFormSchema>> } } = $props();
 
 	const form = superForm(data.form, {
-		validators: zodClient(formSchema),
+		validators: zodClient(formSchema)
 	});
 
 	const { form: formData, enhance, delayed } = form;
@@ -44,10 +44,10 @@
 		<CardContent>
 			<div class="grid gap-6">
 				<div class="flex flex-col gap-4">
-                    <Button onclick={onSignInWithGoogle} variant="outline" class="w-full" type="button">
-                        <Icon icon="devicon:google" class="mr-2 h-4 w-4" />
-                        Continue With Google
-                    </Button>
+					<Button onclick={onSignInWithGoogle} variant="outline" class="w-full" type="button">
+						<Icon icon="devicon:google" class="mr-2 h-4 w-4" />
+						Continue With Google
+					</Button>
 				</div>
 				<div
 					class="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border"
@@ -60,41 +60,41 @@
 					<form method="POST" use:enhance>
 						<Form.Field {form} name="name">
 							<Form.Control>
-							{#snippet children({ props })}
-								<Form.Label>Name</Form.Label>
-								<Input {...props} bind:value={$formData.name} />
-							{/snippet}
+								{#snippet children({ props })}
+									<Form.Label>Name</Form.Label>
+									<Input {...props} bind:value={$formData.name} />
+								{/snippet}
 							</Form.Control>
 							<Form.FieldErrors />
 						</Form.Field>
 						<Form.Field {form} name="email">
 							<Form.Control>
-							{#snippet children({ props })}
-								<Form.Label>Email</Form.Label>
-								<Input {...props} bind:value={$formData.email} />
-							{/snippet}
+								{#snippet children({ props })}
+									<Form.Label>Email</Form.Label>
+									<Input {...props} bind:value={$formData.email} />
+								{/snippet}
 							</Form.Control>
 							<Form.FieldErrors />
 						</Form.Field>
 						<Form.Field {form} name="password">
 							<Form.Control>
-							{#snippet children({ props })}
-								<Form.Label>Password</Form.Label>
-								<Input type="password" {...props} bind:value={$formData.password} />
-							{/snippet}
+								{#snippet children({ props })}
+									<Form.Label>Password</Form.Label>
+									<Input type="password" {...props} bind:value={$formData.password} />
+								{/snippet}
 							</Form.Control>
 							<Form.FieldErrors />
 						</Form.Field>
 						<Form.Field {form} name="password_confirmation">
 							<Form.Control>
-							{#snippet children({ props })}
-								<Form.Label>Password Confirmation</Form.Label>
-								<Input type="password" {...props} bind:value={$formData.password_confirmation} />
-							{/snippet}
+								{#snippet children({ props })}
+									<Form.Label>Password Confirmation</Form.Label>
+									<Input type="password" {...props} bind:value={$formData.password_confirmation} />
+								{/snippet}
 							</Form.Control>
 							<Form.FieldErrors />
 						</Form.Field>
-						<Form.Button class="w-full mt-4" disabled={$delayed} type="submit">
+						<Form.Button class="mt-4 w-full" disabled={$delayed} type="submit">
 							{#if $delayed}
 								<Icon icon="lucide:loader" class="mr-2 animate-spin" />
 								Loading...
